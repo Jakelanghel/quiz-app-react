@@ -1,0 +1,20 @@
+.container-start-screen {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 1px;
+    line-height: 37px;
+    text-transform: capitalize;
+}
+
+.title {
+    font-family: Karla;
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+.sub-title {
+    font-size: 1.25rem;
+}

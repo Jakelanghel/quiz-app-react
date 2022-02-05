@@ -1,0 +1,66 @@
+@import url("https://fonts.googleapis.com/css2?family=Karla:wght@400;500;700&family=Manrope:wght@600;800&display=swap");
+
+:root {
+    --background-color: #f5f7fb;
+    --dark-blue: #4d5b9e;
+    --light-grey: #dbdef0;
+    --dark-grey: #d6dbf5;
+    --light-red: #f8bcbc;
+    --light-green: #94d7a2;
+    --red: #cc0000;
+}
+
+* {
+    font-family: "Karla", sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+body {
+    color: var(--dark-blue);
+}
+
+.mg-bottom {
+    margin-bottom: 1rem;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: url("./images/SL-051919-20420-09.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
+
+.btn {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: capitalize;
+    letter-spacing: 2px;
+    color: var(--background-color);
+    background: var(--dark-blue);
+    border: none;
+    border-radius: 10px;
+    padding: 1.5rem 3rem;
+}
+
+.check-btn {
+    margin: 3rem 0 3rem 2.5rem;
+}
+
+.check-btn:hover,
+.check-btn:focus {
+    opacity: 0.8;
+}
+
+.msg {
+    text-transform: capitalize;
+    font-size: 1.25rem;
+    font-weight: 900;
+}
+
+.error-msg {
+    color: var(--red);
+}
