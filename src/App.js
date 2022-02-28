@@ -1,7 +1,10 @@
 import React from "react";
-import { nanoid } from "nanoid";
 import StartScreen from "./components/StartScreen";
+import StartScreen2 from "./components/StartScreen_2";
 import Question from "./components/Question";
+
+import { nanoid } from "nanoid";
+
 import "./App.css";
 
 const Ap = () => {
@@ -12,20 +15,33 @@ const Ap = () => {
         quizStarted: false,
         quizComplete: false,
         questionsArr: [],
+        category: "",
+        difficulty: "",
     });
+
     const [quizCount, setQuizCount] = React.useState(1);
 
+    const [allCategories, setCategories] = React.useState({});
+
+    const [url, setUrl] = React.useState(
+        "https://opentdb.com/api.php?amount=10&type=multiple&encode=base64"
+    );
+
     React.useEffect(() => {
-        fetch(
-            "https://opentdb.com/api.php?amount=5&type=multiple&encode=base64"
-        )
+        fetch("https://opentdb.com/api_category.php")
+            .then((res) => res.json())
+            .then((data) => {
+                setCategories(data.trivia_categories);
+            });
+    }, []);
+
+    React.useEffect(() => {
+        fetch(url)
             .then((res) => res.json())
             .then((data) => {
                 const decodedData = decodeData(data.results);
-                // console.log(decodedData);
                 const shuffledAnswersArr = decodedData.map((Q) => {
                     const arr = Q.incorrect_answers;
-                    console.log(arr);
                     arr.push(Q.correct_answer);
                     return arr;
                 });
@@ -47,7 +63,7 @@ const Ap = () => {
                     quizComplete: false,
                 }));
             });
-    }, [quizCount]);
+    }, [url]);
 
     // ============================================
     // FUNCTIONS ==================================
@@ -77,10 +93,70 @@ const Ap = () => {
     };
 
     const startQuiz = () => {
+        const categoryValue = document.querySelector(".categories").value;
+        const difficultyValue = document.querySelector(".difficulty").value;
+        if (categoryValue && difficultyValue !== "Any") {
+            for (let cat of allCategories) {
+                if (cat.name === categoryValue) {
+                    const category = `category=${cat.id}`;
+                    const difficulty = `difficulty=${difficultyValue}`;
+                    setUrl(
+                        `https://opentdb.com/api.php?amount=10&${category}&${difficulty}&type=multiple&encode=base64`
+                    );
+                }
+            }
+        } else if (categoryValue !== "Any") {
+            for (let cat of allCategories) {
+                if (cat.name === categoryValue) {
+                    const category = `category=${cat.id}`;
+                    setUrl(
+                        `https://opentdb.com/api.php?amount=10&${category}&difficulty=easy&type=multiple&encode=base64`
+                    );
+                }
+            }
+        } else if (difficultyValue !== "Any") {
+            const difficulty = `difficulty=${difficultyValue}`;
+            setUrl(
+                `https://opentdb.com/api.php?amount=10&${difficulty}&type=multiple&encode=base64`
+            );
+        } else {
+            setUrl(
+                `https://opentdb.com/api.php?amount=10&difficulty=easy&type=multiple&encode=base64`
+            );
+        }
+        for (let cat of allCategories) {
+            if (cat.name === categoryValue) {
+                const category = `category=${cat.id}`;
+            }
+        }
+
         setQuizData((oldData) => {
             return {
                 ...oldData,
                 quizStarted: true,
+            };
+        });
+    };
+
+    const handleResponse = (arr) => {
+        const decodedData = decodeData(arr);
+        const shuffledAnswers = shuffleAnswers(decodedData);
+    };
+
+    const shuffleAnswers = (decodedData) => {
+        const shuffledAnswersArr = decodedData.map((Q) => {
+            const arr = Q.incorrect_answers;
+            arr.push(Q.correct_answer);
+            return arr;
+        });
+
+        const questions = decodedData.map((Q, i) => {
+            return {
+                ...Q,
+                shuffledAnswers: shuffledAnswersArr[i],
+                selectedAnswer: "",
+                id: nanoid(),
+                error: false,
             };
         });
     };
@@ -194,7 +270,10 @@ const Ap = () => {
     return (
         <div className='container'>
             {!quizData.quizStarted ? (
-                <StartScreen handleClick={startQuiz} />
+                <StartScreen2
+                    handleClick={startQuiz}
+                    categories={allCategories}
+                />
             ) : (
                 <div className='container-questions'>{questionElements}</div>
             )}
