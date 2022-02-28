@@ -58,8 +58,10 @@ body {
 
 .msg {
     text-transform: capitalize;
-    font-size: 1.25rem;
+    text-align: center;
+    font-size: 1.5rem;
     font-weight: 900;
+    margin-bottom: 2rem;
 }
 
 .error-msg {
@@ -68,6 +70,7 @@ body {
 
 .container-actions {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    padding-bottom: 3rem;
 }
