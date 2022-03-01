@@ -1,14 +1,11 @@
-.container-questions {
+.container-question {
     padding: 1.5rem 1.5rem;
+    padding-bottom: 2.5rem;
     max-width: 550px;
     margin: 0 auto;
-}
-
-.container-question {
     font-size: 1.75rem;
     margin-bottom: 3rem;
     line-height: 2.5rem;
-    padding-bottom: 2.5rem;
     border-bottom: solid 2px var(--light-grey);
 }
 
@@ -60,9 +57,10 @@
 @media (min-width: 900px) {
     .container-questions {
         max-width: 90%;
+        margin: 0 auto;
     }
     .container-question {
-        width: 80%;
+        width: 100%;
     }
 
     .question {

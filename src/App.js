@@ -165,6 +165,15 @@ const Ap = () => {
         setQuizCount((oldCount) => (oldCount += 1));
     };
 
+    const backToMenu = () => {
+        setQuizData((oldState) => {
+            return {
+                ...oldState,
+                quizStarted: false,
+            };
+        });
+    };
+
     const selectAnswer = (e) => {
         const answerElement = e.target;
         const id = e.target.id;
@@ -280,16 +289,20 @@ const Ap = () => {
 
             {quizData.quizStarted && (
                 <div className='container-actions'>
-                    {quizData.quizComplete && (
-                        <p className='msg score-msg'>
-                            {`you scored ${quizData.score} / ${quizData.questionsArr.length} correct answers.`}
-                        </p>
-                    )}
+                    <button className='main-menu-btn' onClick={backToMenu}>
+                        main menu
+                    </button>
                     {errors.indexOf(true) !== -1 && (
                         <p className='msg error-msg'>
                             please answer ALL questions to continue ! ! !
                         </p>
                     )}
+                    {quizData.quizComplete && (
+                        <p className='msg score-msg'>
+                            {`you scored ${quizData.score} / ${quizData.questionsArr.length} correct answers.`}
+                        </p>
+                    )}
+
                     <button
                         className='check-btn btn'
                         onClick={quizData.quizComplete ? resetGame : gradeQuiz}
