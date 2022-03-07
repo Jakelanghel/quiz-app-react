@@ -80,6 +80,27 @@ const Start_Screen = (props) => {
                             <option value='hard'>Hard</option>
                         </select>
                     </label>
+
+                    <label htmlFor='selectList' className='select-label'>
+                        quiz length
+                        <select
+                            name='selectList'
+                            id='selectList'
+                            className='select-list quiz-length'
+                        >
+                            {/* <option value='1'>1</option> */}
+                            <option value='5'>5</option>
+                            <option value='10'>10</option>
+                            <option value='15'>15</option>
+                            <option value='20'>20</option>
+                            <option value='20'>25</option>
+                            <option value='20'>30</option>
+                            <option value='20'>35</option>
+                            <option value='20'>40</option>
+                            <option value='20'>45</option>
+                            <option value='20'>50</option>
+                        </select>
+                    </label>
                     <button
                         className='start-quiz-btn'
                         onClick={props.handleClick}

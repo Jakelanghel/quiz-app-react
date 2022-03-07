@@ -1,16 +1,15 @@
 import React from "react";
-import StartScreen from "./components/StartScreen";
 import StartScreen2 from "./components/StartScreen_2";
 import Question from "./components/Question";
-
+import ContainerActions from "./components/Container-actions";
 import { nanoid } from "nanoid";
-
 import "./App.css";
 
-const Ap = () => {
-    // ============================================
-    // STATE ======================================
-    // ============================================
+const App = () => {
+    // ======================
+    // State ================
+    // ======================
+
     const [quizData, setQuizData] = React.useState({
         quizStarted: false,
         quizComplete: false,
@@ -19,13 +18,13 @@ const Ap = () => {
         difficulty: "",
     });
 
-    const [quizCount, setQuizCount] = React.useState(1);
+    const [url, setUrl] = React.useState(
+        "https://opentdb.com/api.php?amount=5&type=multiple&encode=base64"
+    );
 
     const [allCategories, setCategories] = React.useState({});
 
-    const [url, setUrl] = React.useState(
-        "https://opentdb.com/api.php?amount=10&type=multiple&encode=base64"
-    );
+    const [quizCount, setQuizCount] = React.useState(1);
 
     React.useEffect(() => {
         fetch("https://opentdb.com/api_category.php")
@@ -40,95 +39,70 @@ const Ap = () => {
             .then((res) => res.json())
             .then((data) => {
                 const decodedData = decodeData(data.results);
-                const shuffledAnswersArr = decodedData.map((Q) => {
-                    const arr = Q.incorrect_answers;
-                    arr.push(Q.correct_answer);
-                    return arr;
-                });
-
-                const questions = decodedData.map((Q, i) => {
-                    return {
-                        ...Q,
-                        shuffledAnswers: shuffledAnswersArr[i],
-                        selectedAnswer: "",
-                        id: nanoid(),
-                        error: false,
-                    };
-                });
-
+                const questions = shuffleAnswers(decodedData);
                 setQuizData((oldData) => ({
                     ...oldData,
                     questionsArr: questions,
                     score: 0,
                     quizComplete: false,
+                    errors: false,
                 }));
             });
-    }, [url]);
+    }, [url, quizCount]);
 
-    // ============================================
-    // FUNCTIONS ==================================
-    // ============================================
+    // ======================
+    // FUNCTIONS ============
+    // ======================
 
-    const decodeData = (arr, data) => {
-        // console.log(arr);
-        const decoded = [];
-        arr.forEach((obj) => {
+    const decodeData = (arr) => {
+        const newArr = JSON.parse(JSON.stringify(arr));
+        const decodedData = newArr.map((obj) => {
             const decodedObj = {};
             for (let key in obj) {
-                if (Array.isArray(obj[key])) {
-                    const arr = obj[key];
-                    // console.log(arr);
-                    const decodedArr = arr.map((i) => atob(i));
-                    const objKey = key;
-                    decodedObj[objKey] = decodedArr;
+                if (key !== "incorrect_answers") {
+                    decodedObj[key] = atob(obj[key]);
                 } else {
-                    const objKey = key;
-                    const decodedStr = atob(obj[key]);
-                    decodedObj[objKey] = decodedStr;
+                    const incorrectAns = [];
+                    obj[key].forEach((ans) => {
+                        const answer = atob(ans);
+                        incorrectAns.push(answer);
+                    });
+                    decodedObj[key] = incorrectAns;
                 }
             }
-            decoded.push(decodedObj);
+
+            return decodedObj;
         });
-        return decoded;
+        return decodedData;
     };
 
+    const shuffleAnswers = (arr) => {
+        const questions = arr.map((q) => {
+            const incorrectArr = q.incorrect_answers.map((ans) => ans);
+            const randIndex = Math.floor(Math.random() * 3);
+            const correctAns = q.correct_answer;
+            incorrectArr.splice(randIndex, 0, correctAns);
+            const question = Object.assign({}, q, {
+                shuffledAnswers: incorrectArr,
+                selectedAnswer: "",
+                id: nanoid(),
+            });
+            return question;
+        });
+        return questions;
+    };
+
+    // START QUIZ ======================
+    // =================================
+
     const startQuiz = () => {
-        const categoryValue = document.querySelector(".categories").value;
-        const difficultyValue = document.querySelector(".difficulty").value;
-        if (categoryValue && difficultyValue !== "Any") {
-            for (let cat of allCategories) {
-                if (cat.name === categoryValue) {
-                    const category = `category=${cat.id}`;
-                    const difficulty = `difficulty=${difficultyValue}`;
-                    setUrl(
-                        `https://opentdb.com/api.php?amount=10&${category}&${difficulty}&type=multiple&encode=base64`
-                    );
-                }
-            }
-        } else if (categoryValue !== "Any") {
-            for (let cat of allCategories) {
-                if (cat.name === categoryValue) {
-                    const category = `category=${cat.id}`;
-                    setUrl(
-                        `https://opentdb.com/api.php?amount=10&${category}&difficulty=easy&type=multiple&encode=base64`
-                    );
-                }
-            }
-        } else if (difficultyValue !== "Any") {
-            const difficulty = `difficulty=${difficultyValue}`;
-            setUrl(
-                `https://opentdb.com/api.php?amount=10&${difficulty}&type=multiple&encode=base64`
-            );
-        } else {
-            setUrl(
-                `https://opentdb.com/api.php?amount=10&difficulty=easy&type=multiple&encode=base64`
-            );
-        }
-        for (let cat of allCategories) {
-            if (cat.name === categoryValue) {
-                const category = `category=${cat.id}`;
-            }
-        }
+        const category = getCategory();
+        const difficulty = getDifficulty();
+        const quizLength = getQuizLength();
+
+        let url = `https://opentdb.com/api.php?${quizLength}${category}${difficulty}&type=multiple&encode=base64`;
+
+        setUrl(url);
 
         setQuizData((oldData) => {
             return {
@@ -138,39 +112,48 @@ const Ap = () => {
         });
     };
 
-    const handleResponse = (arr) => {
-        const decodedData = decodeData(arr);
-        const shuffledAnswers = shuffleAnswers(decodedData);
+    const getCategory = () => {
+        const categoryValue = document.querySelector(".categories").value;
+        let category =
+            categoryValue === "any"
+                ? ""
+                : allCategories.find((cat) => cat.name === categoryValue).id;
+
+        return category;
     };
 
-    const shuffleAnswers = (decodedData) => {
-        const shuffledAnswersArr = decodedData.map((Q) => {
-            const arr = Q.incorrect_answers;
-            arr.push(Q.correct_answer);
-            return arr;
-        });
-
-        const questions = decodedData.map((Q, i) => {
-            return {
-                ...Q,
-                shuffledAnswers: shuffledAnswersArr[i],
-                selectedAnswer: "",
-                id: nanoid(),
-                error: false,
-            };
-        });
+    const getDifficulty = () => {
+        const difficultyValue = document.querySelector(".difficulty").value;
+        const difficulty =
+            difficultyValue !== "Any" ? `&difficulty=${difficultyValue}` : "";
+        return difficulty;
     };
 
-    const resetGame = () => {
-        setQuizCount((oldCount) => (oldCount += 1));
+    const getQuizLength = () => {
+        const quizLengthValue = document.querySelector(".quiz-length").value;
+        const quizLength = `&amount=${quizLengthValue}`;
+        return quizLength;
     };
 
-    const backToMenu = () => {
-        setQuizData((oldState) => {
-            return {
-                ...oldState,
-                quizStarted: false,
-            };
+    //  QUESTION-ELEMENTS ==============
+    // =================================
+
+    const createQuestionElements = (quizData) => {
+        return quizData.questionsArr.map((Q) => {
+            return (
+                <Question
+                    key={nanoid()}
+                    id={Q.id}
+                    error={Q.error}
+                    quizComplete={quizData.quizComplete}
+                    shuffledAnswers={Q.shuffledAnswers}
+                    selectedAnswer={Q.selectedAnswer}
+                    correctAnswer={Q.correct_answer}
+                    question={Q.question}
+                    handleClick={selectAnswer}
+                    answerClassName={Q.answerClassName}
+                />
+            );
         });
     };
 
@@ -194,49 +177,36 @@ const Ap = () => {
         answerElement.classList.toggle("selected-answer");
     };
 
+    // CONTAINER-ACTIONS-FUNCTIONS =====
+    // =================================
+
     const gradeQuiz = () => {
-        const quizCompleted = quizData.questionsArr.every(
-            (Q) => Q.selectedAnswer
-        );
-        markAnswers(quizCompleted);
-        quizCompleted && getScore();
+        const quizCompleted = checkForErrors();
+        if (quizCompleted) {
+            const quizScore = getScore();
+            setQuizData((oldData) => ({
+                ...oldData,
+                quizComplete: true,
+                errors: false,
+                score: quizScore,
+            }));
+        }
     };
 
-    const markAnswers = (quizComplete) => {
-        if (!quizComplete) {
-            setQuizData((oldQuestions) => {
-                const updatedQuestionsArr = quizData.questionsArr.map((Q) => {
-                    return Q.selectedAnswer === "" ? { ...Q, error: true } : Q;
-                });
-                return {
-                    ...oldQuestions,
-                    questionsArr: updatedQuestionsArr,
-                };
-            });
-        } else {
+    const checkForErrors = () => {
+        const allQuestionsAnswered = quizData.questionsArr.every(
+            (Q) => Q.selectedAnswer !== ""
+        );
+
+        if (!allQuestionsAnswered) {
             setQuizData((oldData) => {
-                const updatedQuestionsArr = oldData.questionsArr.map((Q) => {
-                    if (Q.selectedAnswer === Q.correct_answer) {
-                        return {
-                            ...Q,
-                            answerClassName: "answer correct",
-                            error: false,
-                        };
-                    } else {
-                        return {
-                            ...Q,
-                            answerClassName: "answer incorrect",
-                            error: false,
-                        };
-                    }
-                });
                 return {
                     ...oldData,
-                    questionsArr: updatedQuestionsArr,
-                    quizComplete: true,
+                    errors: true,
                 };
             });
         }
+        return allQuestionsAnswered;
     };
 
     const getScore = () => {
@@ -246,35 +216,29 @@ const Ap = () => {
                 quizScore += 1;
             }
         });
-        setQuizData((oldData) => {
+        return quizScore;
+    };
+
+    const backToMenu = () => {
+        resetGame();
+        setQuizData((oldState) => {
             return {
-                ...oldData,
-                score: quizScore,
+                ...oldState,
+                quizStarted: false,
             };
         });
     };
 
-    // ============================================
-    // VARIABLES ==================================
-    // ============================================
+    const resetGame = () => {
+        setQuizCount((oldCount) => (oldCount += 1));
+    };
 
+    // =============================
+    // VARIABLES ===================
+    // =============================
+
+    const questionElements = createQuestionElements(quizData);
     const errors = quizData.questionsArr.map((Q) => (Q.error ? true : false));
-
-    const questionElements = quizData.questionsArr.map((Q) => {
-        return (
-            <Question
-                key={nanoid()}
-                id={Q.id}
-                error={Q.error}
-                shuffledAnswers={Q.shuffledAnswers}
-                selectedAnswer={Q.selectedAnswer}
-                correctAnswer={Q.correct_answer}
-                question={Q.question}
-                handleClick={selectAnswer}
-                answerClassName={Q.answerClassName}
-            />
-        );
-    });
 
     return (
         <div className='container'>
@@ -288,31 +252,17 @@ const Ap = () => {
             )}
 
             {quizData.quizStarted && (
-                <div className='container-actions'>
-                    <button className='main-menu-btn' onClick={backToMenu}>
-                        main menu
-                    </button>
-                    {errors.indexOf(true) !== -1 && (
-                        <p className='msg error-msg'>
-                            please answer ALL questions to continue ! ! !
-                        </p>
-                    )}
-                    {quizData.quizComplete && (
-                        <p className='msg score-msg'>
-                            {`you scored ${quizData.score} / ${quizData.questionsArr.length} correct answers.`}
-                        </p>
-                    )}
-
-                    <button
-                        className='check-btn btn'
-                        onClick={quizData.quizComplete ? resetGame : gradeQuiz}
-                    >
-                        {quizData.quizComplete ? "Play Again" : "Check Answers"}
-                    </button>
-                </div>
+                <ContainerActions
+                    backToMenu={backToMenu}
+                    resetGame={resetGame}
+                    gradeQuiz={gradeQuiz}
+                    errors={errors}
+                    quizData={quizData}
+                    score={quizData.score}
+                />
             )}
         </div>
     );
 };
 
-export default Ap;
+export default App;
