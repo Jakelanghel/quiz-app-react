@@ -1,5 +1,5 @@
 .container-question {
-    padding: 1.5rem 1.5rem;
+    padding: 1.5rem 2.5rem;
     padding-bottom: 2.5rem;
     max-width: 550px;
     margin: 0 auto;
@@ -55,12 +55,13 @@
 }
 
 @media (min-width: 900px) {
-    .container-questions {
+    .container-question {
         max-width: 90%;
         margin: 0 auto;
     }
     .container-question {
         width: 100%;
+        margin-bottom: 3.5rem;
     }
 
     .question {

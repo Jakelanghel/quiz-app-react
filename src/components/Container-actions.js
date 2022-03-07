@@ -1,11 +1,9 @@
 import React from "react";
+import "./Container-actions.css";
 
 const ContainerActions = (props) => {
     return (
         <div className='container-actions'>
-            <button className='main-menu-btn' onClick={props.backToMenu}>
-                main menu
-            </button>
             {props.quizData.errors && (
                 <p className='msg error-msg'>
                     please answer ALL questions to continue ! ! !
@@ -26,6 +24,9 @@ const ContainerActions = (props) => {
                 }
             >
                 {props.quizData.quizComplete ? "Play Again" : "Check Answers"}
+            </button>
+            <button className='main-menu-btn' onClick={props.backToMenu}>
+                main menu
             </button>
         </div>
     );

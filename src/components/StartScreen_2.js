@@ -3,7 +3,6 @@ import "./startScreen.css";
 
 const Start_Screen = (props) => {
     return (
-        // <div className='container-user-input'>
         <div className='container-start-screen'>
             <div className='container-background'>
                 <h1 className='title mg-bottom'>quizzical</h1>
@@ -110,8 +109,6 @@ const Start_Screen = (props) => {
                 </form>
             </div>
         </div>
-
-        // </div>
     );
 };
 

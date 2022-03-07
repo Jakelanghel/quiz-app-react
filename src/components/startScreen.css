@@ -1,5 +1,6 @@
 .container-start-screen {
-    height: 100vh;
+    width: 90%;
+    max-width: 700px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -19,7 +20,7 @@
 }
 
 .container-background {
-    width: 90%;
+    width: 100%;
     color: #fff;
     text-align: center;
     padding: 3rem;
@@ -29,12 +30,14 @@
 }
 
 .usr-input {
+    max-width: 300px;
     display: flex;
     flex-direction: column;
-    padding: 0 1rem;
+    margin: 0 auto;
 }
 
 .select-label {
+    max-width: 400px;
     font-size: 1.25rem;
     display: flex;
     align-items: center;
@@ -62,4 +65,14 @@
     margin: 0 auto;
     margin-top: 1.5rem;
     padding: 0.75em;
+}
+
+@media (min-width: 575px) {
+    .container-background {
+        padding: 5rem;
+    }
+
+    .start-quiz-btn {
+        margin-top: 4rem;
+    }
 }

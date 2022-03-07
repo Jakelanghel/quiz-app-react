@@ -46,9 +46,12 @@ const App = () => {
                     score: 0,
                     quizComplete: false,
                     errors: false,
+                    category: decodedData[0].category,
                 }));
             });
     }, [url, quizCount]);
+
+    console.log(quizData);
 
     // ======================
     // FUNCTIONS ============
@@ -152,6 +155,7 @@ const App = () => {
                     question={Q.question}
                     handleClick={selectAnswer}
                     answerClassName={Q.answerClassName}
+                    category={quizData.category}
                 />
             );
         });
@@ -248,7 +252,10 @@ const App = () => {
                     categories={allCategories}
                 />
             ) : (
-                <div className='container-questions'>{questionElements}</div>
+                <div className='container-questions'>
+                    <h1 className='quiz-category'>{quizData.category}</h1>
+                    {questionElements}
+                </div>
             )}
 
             {quizData.quizStarted && (
