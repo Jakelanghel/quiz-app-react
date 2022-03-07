@@ -42,7 +42,7 @@ body {
     background-position: center;
 }
 
-.quiz-category {
+.title-card {
     width: 80%;
     text-align: center;
     background: var(--dark-blue);
@@ -52,6 +52,18 @@ body {
     opacity: 0.8;
     max-width: 800px;
     margin: 2rem auto;
+}
+
+.difficulty {
+    font-size: 1.25rem;
+    margin-top: 1rem;
+    letter-spacing: 2px;
+}
+
+.diff-level {
+    font-weight: 800;
+    text-transform: capitalize;
+    margin-left: 0.5rem;
 }
 
 .btn {

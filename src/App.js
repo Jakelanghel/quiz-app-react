@@ -47,6 +47,7 @@ const App = () => {
                     quizComplete: false,
                     errors: false,
                     category: decodedData[0].category,
+                    difficulty: decodedData[0].difficulty,
                 }));
             });
     }, [url, quizCount]);
@@ -253,7 +254,16 @@ const App = () => {
                 />
             ) : (
                 <div className='container-questions'>
-                    <h1 className='quiz-category'>{quizData.category}</h1>
+                    <div className='title-card'>
+                        <h1 className='quiz-category'>{quizData.category}</h1>
+                        <p className='difficulty'>
+                            Difficulty:{" "}
+                            <span className='diff-level'>
+                                {quizData.difficulty}
+                            </span>
+                        </p>
+                    </div>
+
                     {questionElements}
                 </div>
             )}
