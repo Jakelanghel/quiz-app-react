@@ -256,7 +256,7 @@ const App = () => {
                 <div className='container-questions'>
                     <div className='title-card'>
                         <h1 className='quiz-category'>{quizData.category}</h1>
-                        <p className='difficulty'>
+                        <p className='difficulty-p'>
                             Difficulty:{" "}
                             <span className='diff-level'>
                                 {quizData.difficulty}
