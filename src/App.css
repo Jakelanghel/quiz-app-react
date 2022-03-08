@@ -52,6 +52,7 @@ body {
     opacity: 0.8;
     max-width: 800px;
     margin: 2rem auto;
+    margin-bottom: 4rem;
 }
 
 .difficulty-p {

@@ -1,5 +1,18 @@
+.actions-background {
+    width: 90%;
+    max-width: 550px;
+
+    background: url("../images/SL-051919-20420-09.jpg");
+    background-size: 200%;
+    background-repeat: no-repeat;
+    background-position: right center;
+    margin-bottom: 3rem;
+}
+
 .container-actions {
-    width: 80%;
+    width: 100%;
+    margin: 0 auto;
+    background: var(--light-grey);
     max-width: 550px;
     display: flex;
     flex-direction: column;
@@ -7,43 +20,54 @@
     justify-content: center;
     padding: 3rem 1.5rem;
     border-radius: 10px;
-    margin-bottom: 3rem;
-    background: var(--dark-blue);
+    opacity: 0.5;
+    border: solid 1px var(--dark-blue);
 }
 
 .main-menu-btn {
+    background: transparent;
     color: var(--dark-blue);
     font-size: 1.25rem;
     font-weight: 600;
     text-transform: capitalize;
-    padding: 10px 15px;
+    padding: 15px 30px;
     border-radius: 10px;
-    background: var(--light-grey);
     border: none;
-    margin-top: 2rem;
+    margin-top: 3rem;
+    border: solid 1px var(--dark-blue);
 }
 .main-menu-btn:hover {
-    opacity: 0.5;
+    background: var(--dark-blue);
+    color: var(--light-grey);
+    opacity: 1;
 }
 
 .container-actions .check-btn {
+    font-weight: 600;
+    background: transparent;
     margin: 0 auto;
-    background: #fff;
     color: var(--dark-blue);
-    border: solid 2px var(--dark-blue);
+    border: solid 3px var(--dark-blue);
 }
 
-.check-btn:hover,
-.check-btn:focus {
-    opacity: 0.5;
+.container-actions .check-btn:hover,
+.container-actions .check-btn:focus {
+    background: var(--dark-blue);
+    color: var(--light-grey);
+    opacity: 1;
 }
 
 .msg {
+    font-size: 1.5rem;
     text-transform: capitalize;
     text-align: center;
-    font-weight: 900;
     line-height: 2rem;
     margin-bottom: 1.5rem;
+}
+
+.score-msg {
+    color: var(--red);
+    opacity: 1;
 }
 
 .error-msg {
