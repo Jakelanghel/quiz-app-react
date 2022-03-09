@@ -31,9 +31,10 @@
     font-size: 1.15rem;
     font-weight: 700;
     text-align: center;
-    border: solid 2px var(--dark-blue);
+    border: solid 1px var(--dark-blue);
     border-radius: 15px;
     padding: 10px;
+    box-shadow: inset 0px -4px var(--transparent-blue);
 }
 
 .answer:hover,

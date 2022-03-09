@@ -3,6 +3,8 @@
 :root {
     --background-color: #f5f7fb;
     --dark-blue: #4d5b9e;
+    --transparent-blue: rgb(77, 91, 158, 0.4);
+    --transparent-grey: rgb(219, 222, 240, 0.4);
     --light-grey: #dbdef0;
     --dark-grey: #d6dbf5;
     --light-red: #f8bcbc;

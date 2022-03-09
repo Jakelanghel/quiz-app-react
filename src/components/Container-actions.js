@@ -3,7 +3,7 @@ import "./Container-actions.css";
 
 const ContainerActions = (props) => {
     return (
-        <div className='actions-background'>
+        <div className='actions-background-img'>
             <div className='container-actions'>
                 {props.quizData.errors && (
                     <p className='msg error-msg'>

@@ -52,7 +52,7 @@ const App = () => {
             });
     }, [url, quizCount]);
 
-    console.log(quizData);
+    // console.log(quizData);
 
     // ======================
     // FUNCTIONS ============
@@ -103,8 +103,19 @@ const App = () => {
         const category = getCategory();
         const difficulty = getDifficulty();
         const quizLength = getQuizLength();
+        // console.log(category);
+        // console.log(difficulty);
+        // console.log(quizLength);
 
         let url = `https://opentdb.com/api.php?${quizLength}${category}${difficulty}&type=multiple&encode=base64`;
+
+        const X =
+            "https://opentdb.com/api.php?amount=10&category=9&difficulty=hard&type=multiple&encode=base64";
+
+        const x =
+            "https://opentdb.com/api.php?&amount=109&difficulty=hard&type=multiple&encode=base64";
+
+        // console.log(url);
 
         setUrl(url);
 
@@ -118,11 +129,14 @@ const App = () => {
 
     const getCategory = () => {
         const categoryValue = document.querySelector(".categories").value;
-        let category =
-            categoryValue === "any"
-                ? ""
-                : allCategories.find((cat) => cat.name === categoryValue).id;
-
+        // console.log(categoryValue);
+        let category = "";
+        if (categoryValue !== "any") {
+            const catId = allCategories.find((cat) => {
+                return cat.name === categoryValue;
+            }).id;
+            category = `&category=${catId}`;
+        }
         return category;
     };
 
