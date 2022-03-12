@@ -32,7 +32,7 @@ const Question = (props) => {
     };
     return (
         <div className='container-question'>
-            <p className='question'>{props.question}</p>
+            <p className='question'>{` ${props.questionCount}.  ${props.question}`}</p>
             <ul className='answers'>
                 <li
                     className={getClassName(0)}

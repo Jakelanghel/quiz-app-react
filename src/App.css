@@ -44,29 +44,16 @@ body {
     background-position: center;
 }
 
-.title-card {
-    width: 80%;
-    text-align: center;
-    background: var(--dark-blue);
-    color: #fff;
-    padding: 2rem;
-    border-radius: 10px;
-    opacity: 0.8;
-    max-width: 800px;
-    margin: 2rem auto;
-    margin-bottom: 4rem;
-}
-
-.difficulty-p {
+.container-question {
+    width: 90%;
+    padding: 2rem 0;
+    padding-bottom: 2.5rem;
+    max-width: 550px;
+    margin: 0 auto;
     font-size: 1.25rem;
-    margin-top: 1rem;
-    letter-spacing: 2px;
-}
-
-.diff-level {
-    font-weight: 800;
-    text-transform: capitalize;
-    margin-left: 0.5rem;
+    margin-bottom: 3rem;
+    line-height: 2.5rem;
+    border-top: solid 2px var(--light-grey);
 }
 
 .btn {
@@ -74,9 +61,9 @@ body {
     font-weight: 700;
     text-transform: capitalize;
     letter-spacing: 2px;
-    color: var(--background-color);
-    background: var(--dark-blue);
+    color: var(--dark-blue);
     border: none;
     border-radius: 10px;
     padding: 1.5rem 2rem;
+    box-shadow: inset 0px -4px var(--transparent-blue);
 }

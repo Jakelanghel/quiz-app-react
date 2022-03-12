@@ -1,7 +1,9 @@
 import React from "react";
-import StartScreen2 from "./components/StartScreen_2";
+import StartScreen2 from "./components/StartScreen";
+import TitleCard from "./components/TitleCard";
 import Question from "./components/Question";
-import ContainerActions from "./components/Container-actions";
+import ContainerActions from "./components/ContainerActions";
+import ContainerBackground from "./components/ContainerBackground";
 import { nanoid } from "nanoid";
 import "./App.css";
 
@@ -105,7 +107,7 @@ const App = () => {
         const quizLength = getQuizLength();
         // console.log(category);
         // console.log(difficulty);
-        // console.log(quizLength);
+        console.log(quizLength);
 
         let url = `https://opentdb.com/api.php?${quizLength}${category}${difficulty}&type=multiple&encode=base64`;
 
@@ -157,7 +159,7 @@ const App = () => {
     // =================================
 
     const createQuestionElements = (quizData) => {
-        return quizData.questionsArr.map((Q) => {
+        return quizData.questionsArr.map((Q, i) => {
             return (
                 <Question
                     key={nanoid()}
@@ -171,6 +173,7 @@ const App = () => {
                     handleClick={selectAnswer}
                     answerClassName={Q.answerClassName}
                     category={quizData.category}
+                    questionCount={i + 1}
                 />
             );
         });
@@ -267,30 +270,31 @@ const App = () => {
                     categories={allCategories}
                 />
             ) : (
-                <div className='container-questions'>
-                    <div className='title-card'>
-                        <h1 className='quiz-category'>{quizData.category}</h1>
-                        <p className='difficulty-p'>
-                            Difficulty:{" "}
-                            <span className='diff-level'>
-                                {quizData.difficulty}
-                            </span>
-                        </p>
-                    </div>
+                <div className='main'>
+                    <ContainerBackground>
+                        <TitleCard
+                            difficulty={quizData.difficulty}
+                            category={quizData.category}
+                        />
+                    </ContainerBackground>
 
-                    {questionElements}
+                    <div className='container-questions'>
+                        {questionElements}
+                    </div>
                 </div>
             )}
 
             {quizData.quizStarted && (
-                <ContainerActions
-                    backToMenu={backToMenu}
-                    resetGame={resetGame}
-                    gradeQuiz={gradeQuiz}
-                    errors={errors}
-                    quizData={quizData}
-                    score={quizData.score}
-                />
+                <ContainerBackground>
+                    <ContainerActions
+                        backToMenu={backToMenu}
+                        resetGame={resetGame}
+                        gradeQuiz={gradeQuiz}
+                        errors={errors}
+                        quizData={quizData}
+                        score={quizData.score}
+                    />
+                </ContainerBackground>
             )}
         </div>
     );

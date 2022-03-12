@@ -1,15 +1,3 @@
-.container-question {
-    width: 90%;
-    padding: 2rem 0;
-    padding-bottom: 2.5rem;
-    max-width: 550px;
-    margin: 0 auto;
-    font-size: 1.25rem;
-    margin-bottom: 3rem;
-    line-height: 2.5rem;
-    border-top: solid 2px var(--light-grey);
-}
-
 .question {
     text-transform: capitalize;
     margin-bottom: 1.5rem;

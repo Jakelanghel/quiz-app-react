@@ -1,0 +1,24 @@
+.container-background-image {
+    width: 90%;
+    max-width: 550px;
+    background: url("../images/SL-051919-20420-09.jpg");
+    background-size: 200%;
+    background-repeat: no-repeat;
+    background-position: right center;
+    margin-bottom: 3rem;
+    margin: 3.5rem auto;
+}
+
+.container-background-color {
+    width: 100%;
+    background: var(--transparent-grey);
+    max-width: 550px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+        rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+        rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
